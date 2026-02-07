@@ -3,7 +3,7 @@
 **Tu sei**: Lo SPEC-OS ADAPTER
 **Compito**: Applicare convenzioni SPEC-OS a file organizzati in {reponame}-Specs/
 **Input**: Leggi `{reponame}-Specs/` e `_meta/repo-type.json`
-**Output**: Aggiorna file con frontmatter YAML, link Obsidian, convenzioni SPEC-OS
+**Output**: Aggiorna file con frontmatter YAML, RINOMINA file con UID, link Obsidian
 
 ---
 
@@ -249,10 +249,15 @@ Aggiungi sezione:
   "...",
   "spec_os_adaptation": {
     "applied_at": "YYYY-MM-DDTHH:MM:SSZ",
-    "convention_version": "1.0",
+    "convention_version": "1.2",
     "uids_generated": {
-      "app:arch:overview": "01-Architecture/Overview.md",
-      "app:arch:tech-stack": "01-Architecture/TechStack.md",
+      "app:arch:overview": "01-Architecture/app__arch__overview.md",
+      "app:arch:tech-stack": "01-Architecture/app__arch__tech-stack.md",
+      ...
+    },
+    "files_renamed": {
+      "Overview.md": "app__arch__overview.md",
+      "TechStack.md": "app__arch__tech-stack.md",
       ...
     },
     "edge_types_used": ["depends_on", "uses", "implements"],
@@ -263,7 +268,86 @@ Aggiungi sezione:
 
 ---
 
-### 7. Validazione Minima
+### 7. RINOMINA FILE CON UID (NUOVO v1.2.0 - OBBLIGATORIO)
+
+**CRITICO**: Dopo aver applicato il frontmatter, RINOMINA ogni file con il pattern UID.
+
+```
+WORKFLOW FILE RENAME:
+
+1. Per OGNI file .md in {reponame}-Specs/ (ricorsivo):
+   
+   a. LEGGI il frontmatter YAML del file
+   b. ESTRAI l'uid (es: "app:arch:overview")
+   c. CONVERTI uid in filename: uid.replace(':', '__') + '.md'
+      - "app:arch:overview" → "app__arch__overview.md"
+   d. RINOMINA il file
+   
+2. MAPPING ESEMPI:
+   
+   PRIMA:                              DOPO:
+   01-Architecture/Overview.md    →   01-Architecture/app__arch__overview.md
+   01-Architecture/TechStack.md   →   01-Architecture/app__arch__tech-stack.md
+   02-API-Contracts/REST-API.md   →   02-API-Contracts/app__contract__rest-api.md
+   03-Quality/Testing.md          →   03-Quality/app__quality__testing.md
+   08-Diagrams/architecture-overview.md → 08-Diagrams/app__diagram__architecture-overview.md
+   08-Diagrams/data-flow.md       →   08-Diagrams/app__diagram__data-flow.md
+
+3. REGOLE NAMING:
+   - Pattern: {domain}__{type}__{name}.md
+   - Tutto lowercase
+   - Usa doppio underscore (__) come separatore
+   - Kebab-case per nomi composti (tech-stack, rest-api)
+   - Max 80 caratteri per filename
+   - NO spazi, NO caratteri speciali
+
+4. CASI SPECIALI:
+   - 00-INDEX.md → {domain}__index__master.md (es: app__index__master.md)
+   - README.md → NON rinominare (resta README.md)
+   - _meta.json → NON rinominare
+   - _diagrams-index.md → {domain}__diagram__index.md
+
+5. AGGIORNA LINK INTERNI:
+   Dopo il rename, aggiorna i link Obsidian nei file:
+   - [[01-Architecture/Overview|...]] → [[01-Architecture/app__arch__overview|...]]
+   - Oppure usa il formato UID: [[app:arch:overview|...]]
+```
+
+**ESEMPIO COMPLETO per repo "field-devices" (tipo: library)**:
+
+```
+PRIMA (Step 7 output):
+field-devices-Specs/
+├── 00-INDEX.md
+├── README.md
+├── 01-Overview/
+│   ├── Purpose.md
+│   └── TechStack.md
+├── 08-Diagrams/
+│   ├── architecture-overview.md
+│   └── data-flow.md
+└── _meta.json
+
+DOPO (Step 8 output):
+field-devices-Specs/
+├── field-devices__index__master.md    ← rinominato
+├── README.md                          ← NON rinominato
+├── 01-Overview/
+│   ├── field-devices__overview__purpose.md
+│   └── field-devices__overview__tech-stack.md
+├── 08-Diagrams/
+│   ├── field-devices__diagram__architecture-overview.md
+│   └── field-devices__diagram__data-flow.md
+└── _meta.json                         ← NON rinominato
+```
+
+**NOTA DOMAIN per repo specifico**:
+- Se il repo si chiama "field-devices", il domain è "field-devices" (non "lib" o "app")
+- Questo rende i file univocamente identificabili
+
+---
+
+### 8. Validazione Minima
 
 **Checklist per ogni file**:
 
@@ -288,6 +372,7 @@ Aggiungi sezione:
 - Link minimali ma coerenti
 - UID uniqui, nessun duplicato
 - Naming SPEC-OS compliant (lowercase, kebab-case)
+- **OBBLIGATORIO: Rinominare tutti i file con pattern UID (v1.2.0)**
 
 ---
 
@@ -295,8 +380,9 @@ Aggiungi sezione:
 
 - Ogni file ha frontmatter YAML valido
 - UID generati e mappati in metadata
+- **Ogni file rinominato con pattern {domain}__{type}__{name}.md** (v1.2.0)
 - Link Obsidian presenti per dipendenze esplicite
-- 00-INDEX.md navigabile con link interni
-- _meta.json aggiornato con mapping
-- Repository conforme a SPEC-OS conventions (version 1.0)
+- 00-INDEX.md rinominato e navigabile con link interni
+- _meta.json aggiornato con mapping (incluso files_renamed)
+- Repository conforme a SPEC-OS conventions (version 1.2)
 - Nessun placeholder non risolto

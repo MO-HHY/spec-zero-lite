@@ -44,6 +44,7 @@ CRITERI DI DETECTION:
 ```
 {reponame}-Specs/
 ├── 00-INDEX.md
+├── README.md                          ← NUOVO: README con diagramma architettura
 ├── 01-Architecture/
 │   ├── Overview.md (node-004)
 │   ├── TechStack.md (node-001, node-002)
@@ -69,15 +70,24 @@ CRITERI DI DETECTION:
 │   ├── Improvements.md (node-014)
 │   ├── RiskMitigation.md
 │   └── Roadmap.md
-└── 06-Audit/
-    ├── ExecutionLog.md (node-015)
-    └── Metadata.md
+├── 06-Audit/
+│   ├── ExecutionLog.md (node-015)
+│   └── Metadata.md
+└── 08-Diagrams/                       ← NUOVO: Diagrammi da _generated/diagrams/
+    ├── architecture-overview.md
+    ├── data-flow.md
+    ├── dependency-graph.md
+    ├── sequence-main-flow.md
+    ├── class-hierarchy.md
+    ├── deployment.md
+    └── [diagrammi condizionali]
 ```
 
 **Per LIBRARY / PACKAGE:**
 ```
 {reponame}-Specs/
 ├── 00-INDEX.md
+├── README.md
 ├── 01-Overview/
 │   ├── Purpose.md (node-004)
 │   ├── TechStack.md (node-001)
@@ -98,15 +108,18 @@ CRITERI DI DETECTION:
 ├── 05-Recommendations/
 │   ├── Improvements.md (node-014)
 │   └── RiskMitigation.md
-└── 06-Audit/
-    ├── ExecutionLog.md (node-015)
-    └── Metadata.md
+├── 06-Audit/
+│   ├── ExecutionLog.md (node-015)
+│   └── Metadata.md
+└── 08-Diagrams/
+    └── [tutti i diagrammi]
 ```
 
 **Per MONOREPO:**
 ```
 {reponame}-Specs/
 ├── 00-INDEX.md
+├── README.md
 ├── 01-Overview/
 │   ├── MonorepoStructure.md (node-003)
 │   ├── TechStack.md (node-001)
@@ -128,15 +141,18 @@ CRITERI DI DETECTION:
 ├── 05-Recommendations/
 │   ├── Improvements.md (node-014)
 │   └── RiskMitigation.md
-└── 06-Audit/
-    ├── ExecutionLog.md (node-015)
-    └── Metadata.md
+├── 06-Audit/
+│   ├── ExecutionLog.md (node-015)
+│   └── Metadata.md
+└── 08-Diagrams/
+    └── [tutti i diagrammi]
 ```
 
 **Per AI/ML:**
 ```
 {reponame}-Specs/
 ├── 00-INDEX.md
+├── README.md
 ├── 01-Overview/
 │   ├── Purpose.md (node-004)
 │   ├── TechStack.md (node-001)
@@ -157,9 +173,11 @@ CRITERI DI DETECTION:
 ├── 05-Recommendations/
 │   ├── Improvements.md (node-014)
 │   └── RiskMitigation.md
-└── 06-Audit/
-    ├── ExecutionLog.md (node-015)
-    └── Metadata.md
+├── 06-Audit/
+│   ├── ExecutionLog.md (node-015)
+│   └── Metadata.md
+└── 08-Diagrams/
+    └── [tutti i diagrammi]
 ```
 
 ---
@@ -255,7 +273,7 @@ File: `{reponame}-Specs/_meta.json`
   "repo_name": "{reponame}",
   "repo_path": "{analyzed_repo_path}",
   "spec_type": "fullstack|library|monorepo|ai-ml",
-  "structure_version": "1.0",
+  "structure_version": "1.2",
   "created_at": "YYYY-MM-DDTHH:MM:SSZ",
   "generated_from": "spec-zero-lite-analysis",
   "nodes_mapped": {
@@ -264,7 +282,8 @@ File: `{reponame}-Specs/_meta.json`
     "02-Packages": ["node-006", "node-007", "node-008"],
     "04-Quality": ["node-005", "node-011", "node-012", "node-013"],
     "05-Recommendations": ["node-014"],
-    "06-Audit": ["node-015"]
+    "06-Audit": ["node-015"],
+    "08-Diagrams": ["architecture-overview", "data-flow", "dependency-graph", "sequence-main-flow", "class-hierarchy", "deployment"]
   },
   "repo_type_detection": {
     "type": "fullstack|frontend|backend|library|monorepo",
@@ -276,13 +295,91 @@ File: `{reponame}-Specs/_meta.json`
 
 ---
 
+### 6. Integra Diagrammi (NUOVO v1.2.0)
+
+**OBBLIGATORIO**: Copia tutti i diagrammi da `_generated/diagrams/` a `{reponame}-Specs/08-Diagrams/`
+
+```
+WORKFLOW:
+1. Verifica esistenza di `_generated/diagrams/`
+2. Crea cartella `{reponame}-Specs/08-Diagrams/`
+3. Per OGNI file in `_generated/diagrams/*.md`:
+   - Copia il file in 08-Diagrams/
+   - Mantieni il nome originale (sarà rinominato da Step 8)
+4. Copia anche `_diagrams-index.md` se presente
+
+DIAGRAMMI ATTESI:
+- architecture-overview.md (obbligatorio)
+- data-flow.md (obbligatorio)
+- dependency-graph.md (obbligatorio)
+- sequence-main-flow.md (obbligatorio)
+- class-hierarchy.md (obbligatorio)
+- deployment.md (obbligatorio)
+- [diagrammi condizionali se presenti]
+```
+
+---
+
+### 7. Genera README.md con Diagramma Architettura (NUOVO v1.2.0)
+
+**OBBLIGATORIO**: Crea `{reponame}-Specs/README.md` con diagramma embedded
+
+```markdown
+# {Repository Name} - Technical Specifications
+
+> Auto-generated specifications by spec-zero-lite v1.2.0
+
+## Overview
+
+{Contenuto estratto da node-004 overview - 2-3 paragrafi}
+
+## Architecture
+
+{EMBED del diagramma mermaid da architecture-overview.md - copia il blocco ```mermaid completo}
+
+## Quick Navigation
+
+| Section | Description |
+|---------|-------------|
+| [01-Architecture](./01-Architecture/) | System architecture, tech stack, components |
+| [02-API-Contracts](./02-API-Contracts/) | API endpoints, authentication, schemas |
+| [03-Quality](./03-Quality/) | Testing, performance, security |
+| [04-Operations](./04-Operations/) | Deployment, monitoring |
+| [05-Recommendations](./05-Recommendations/) | Improvements, roadmap |
+| [06-Audit](./06-Audit/) | Execution log, metadata |
+| [08-Diagrams](./08-Diagrams/) | All Mermaid diagrams |
+
+## Tech Stack
+
+{Lista tecnologie estratte da node-001}
+
+## Generated
+
+- **Date**: {YYYY-MM-DD}
+- **Engine**: spec-zero-lite v1.2.0
+- **Source**: {repo_path}
+
+---
+
+*For detailed navigation, see [00-INDEX.md](./00-INDEX.md)*
+```
+
+**REGOLE README**:
+1. Il diagramma mermaid DEVE essere inline (non link)
+2. Estrai contenuto REALE dai nodi, non placeholder
+3. Il README è la "landing page" delle spec
+4. Deve essere self-contained e informativo
+
+---
+
 ## VINCOLI
 
 - Tempo: < 120 secondi
 - Struttura coerente con SPEC-OS patterns
 - Placeholder per frontmatter (non hardcodare)
 - Link consistenti tra file
-- README.md esplicativo della struttura
+- README.md OBBLIGATORIO con diagramma architettura embedded
+- 08-Diagrams/ OBBLIGATORIO con tutti i diagrammi copiati
 
 ---
 
@@ -293,3 +390,5 @@ File: `{reponame}-Specs/_meta.json`
 - File distribuiti in cartelle giuste
 - INDEX.md navigabile
 - _meta.json creato con mapping completo
+- **README.md creato con diagramma architettura inline** (v1.2.0)
+- **08-Diagrams/ creata con tutti i diagrammi** (v1.2.0)

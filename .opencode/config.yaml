@@ -4,14 +4,21 @@
 
 project:
   name: "spec-zero-lite"
-  version: "1.1.0"
+  version: "1.2.0"
   description: "Modular agentic orchestrator for repository analysis"
 
 # ============================================================================
-# ANALYSIS PROJECT CONFIGURATION (v1.1.0)
+# ANALYSIS PROJECT CONFIGURATION (v1.2.0)
 # ============================================================================
 # Ogni analisi viene salvata in una directory dedicata, esterna al engine.
 # Questo mantiene spec-zero-lite pulito e traccia ogni analisi come progetto.
+#
+# v1.2.0 NEW FEATURES:
+# - File auto-rename con pattern UID ({domain}__{type}__{name}.md)
+# - 08-Diagrams/ integrata automaticamente nella struttura output
+# - README.md con diagramma architettura embedded
+# - GitHub repo creation automatica via gh CLI
+# - Submodule in {repo}/{repo-name}-spec/
 
 analysis:
   # Output management

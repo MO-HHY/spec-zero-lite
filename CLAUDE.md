@@ -8,6 +8,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Key Paradigm**: Shifting from algorithmic (hardcoded logic) to agentic (LLM agent-based) problem solving—specifying what to do rather than writing code that "knows" what to do.
 
+**v1.2.0 Update** (Latest):
+- File auto-rename with UID pattern (`{domain}__{type}__{name}.md`)
+- `08-Diagrams/` folder automatically integrated in output structure
+- `README.md` with embedded architecture diagram (Mermaid)
+- GitHub repository auto-creation via `gh` CLI
+- Submodule created at `{repo}/{repo-name}-spec/`
+
 **v1.1.0 Update**: Analysis projects are now isolated in dedicated directories, keeping spec-zero-lite clean as a template/engine.
 
 ## Common Development Commands
@@ -94,6 +101,63 @@ Every analysis is saved to a dedicated, isolated directory:
 - **Traceability**: Engine version, config, timestamps saved
 - **Reproducibility**: Config snapshot enables replication
 - **Clean Engine**: spec-zero-lite stays clean as a template
+
+### v1.2.0 New Features
+
+#### 1. Automatic File Rename with UID Pattern
+
+Files are now automatically renamed to match SPEC-OS conventions:
+
+```
+BEFORE (Step 7):                    AFTER (Step 8):
+Overview.md                    →    field-devices__overview__bootstrap.md
+TechStack.md                   →    field-devices__arch__tech-stack.md
+architecture-overview.md       →    field-devices__diagram__architecture-overview.md
+```
+
+Pattern: `{domain}__{type}__{name}.md`
+
+#### 2. Integrated Diagrams Folder
+
+All Mermaid diagrams are now automatically copied to `08-Diagrams/`:
+
+```
+{repo}-Specs/
+├── ...
+├── 08-Diagrams/
+│   ├── {domain}__diagram__architecture-overview.md
+│   ├── {domain}__diagram__data-flow.md
+│   ├── {domain}__diagram__dependency-graph.md
+│   ├── {domain}__diagram__sequence-main-flow.md
+│   ├── {domain}__diagram__class-hierarchy.md
+│   └── {domain}__diagram__deployment.md
+└── README.md
+```
+
+#### 3. README with Embedded Architecture Diagram
+
+Each spec output includes a `README.md` with:
+- Repository overview (from node-004)
+- **Embedded Mermaid architecture diagram** (inline, renders on GitHub/Obsidian)
+- Quick navigation table
+- Tech stack summary
+
+#### 4. GitHub Repository Auto-Creation
+
+Step 11 now uses `gh` CLI to:
+1. Check if `{repo-name}-spec` exists on GitHub
+2. Create it if not (`gh repo create --public`)
+3. Clone/initialize as submodule
+4. Sync files and push
+5. Update `.gitmodules` in parent repo
+
+```bash
+# Manual test of git-manager
+npx ts-node .opencode/skill/git-manager.ts full-sync \
+  field-devices \
+  /path/to/field-devices \
+  /path/to/field-devices-Specs
+```
 
 ### The 13-Step Orchestration Pipeline
 
