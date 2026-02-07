@@ -360,6 +360,47 @@ PER OGNI LAYER in order (0, 1, 2, ..., N):
 
 ---
 
+## STEP 6: DIAGRAM GENERATION - Genera Diagrammi Mermaid (Layer 6, SERIALE)
+**Agente**: diagram-generator
+**Prompt da leggere**: `.opencode/prompt/step6-diagram-generator.md`
+
+```
+1. Leggi tutti gli output generati:
+   - _generated/node-*.md (tutti i nodi eseguiti)
+   - _meta/00-overview.md (contesto architetturale)
+   - _meta/repo-type.json (tipo repo, se disponibile)
+
+2. Genera diagrammi OBBLIGATORI (6 file):
+   /task diagram-generator "Genera diagrammi Mermaid per {repo_name}"
+   
+   Output in _generated/diagrams/:
+   - architecture-overview.md  (C4 / component diagram)
+   - data-flow.md              (flowchart flusso dati)
+   - dependency-graph.md       (moduli e dipendenze)
+   - sequence-main-flow.md     (sequence del flusso principale)
+   - class-hierarchy.md        (class diagram se OOP)
+   - deployment.md             (infra/deploy diagram)
+
+3. Genera diagrammi CONDIZIONALI (basati su tipo repo):
+   - Se frontend: component-tree.md
+   - Se API: api-sequence.md
+   - Se database: er-diagram.md
+   - Se auth: auth-flow.md
+   - Se monorepo: package-dependency.md
+   - Se CI/CD: ci-cd-pipeline.md
+
+4. Genera indice:
+   _generated/diagrams/_diagrams-index.md
+   (lista tutti i diagrammi con tipo Mermaid e descrizione)
+
+5. Log completamento:
+   /task logging-manager "Log: STEP 6 diagram generation completed, {N} diagrams generated"
+```
+
+**Aspetta**: Tutti i diagrammi generati, indice creato
+
+---
+
 ## STEP 7: ORGANIZE SPECS - Organizza in Struttura Modulare (Layer 7, SERIALE)
 **Agente**: spec-organizer
 **Prompt da leggere**: `.opencode/prompt/step7-spec-organizer.md`
@@ -825,6 +866,7 @@ SPEC-ZERO ORCHESTRATION: <repo-name>
 ├─ [ ] STEP 3: Design node specs (node-creator)
 ├─ [ ] STEP 4: Prepare execution
 ├─ [ ] STEP 5: Execute layers (generic-executor + standard-analyzer + documentation-writer)
+├─ [ ] STEP 6: Generate diagrams (diagram-generator)
 ├─ [ ] STEP 7: Organize specs (spec-organizer)
 ├─ [ ] STEP 8: Adapt to SPEC-OS (spec-os-adapter)
 ├─ [ ] STEP 9: Finalize & report (logging-manager)
@@ -906,7 +948,7 @@ SPEC-ZERO ORCHESTRATION: spec-zero-lite ✅ COMPLETE (12m 30s)
 ## ⚡ REGOLE FONDAMENTALI DI COORDINAZIONE
 
 1. **STEP -1 SEMPRE PRIMO**: Crea progetto analisi PRIMA di tutto
-2. **Sequenza**: STEP -1 → 0 → 1 → 2 → 3 → 4 → (5 parallelizzato per layer) → 7 → 8 → 9 → 10 → 11 → 12
+2. **Sequenza**: STEP -1 → 0 → 1 → 2 → 3 → 4 → (5 parallelizzato per layer) → 6 → 7 → 8 → 9 → 10 → 11 → 12
 3. **Isolamento**: TUTTO l'output va in {output_path}/{project_name}/, MAI in spec-zero-lite
 4. **Delegazione**: Ogni agente legge il PROPRIO prompt (referenziato in opencode.json)
 5. **Logging**: LOGGING-MANAGER gestisce tutti i log strutturati
@@ -1105,7 +1147,7 @@ AT STEP 6 (Finalize):
 
 ---
 
-## ✅ SUCCESS CRITERIA (13 STEP COMPLETI)
+## ✅ SUCCESS CRITERIA (14 STEP COMPLETI)
 
 ### STEP -1 (Create Analysis Project)
 - ✅ Output path chiesto all'utente e confermato
@@ -1126,6 +1168,16 @@ AT STEP 6 (Finalize):
 - ✅ Generic-executor ha eseguito tutti i nodi
 - ✅ _generated/ contiene node-*.md per ogni nodo completato
 - ✅ Success rate ≥ 95% (max 1 nodo fallito su 15+)
+
+### STEP 6 (Diagram Generation)
+- ✅ diagram-generator ha letto tutti i _generated/node-*.md
+- ✅ _generated/diagrams/ creata con almeno 6 file
+- ✅ Diagrammi obbligatori: architecture-overview, data-flow, dependency-graph, sequence-main-flow, class-hierarchy, deployment
+- ✅ Diagrammi condizionali generati se rilevanti (frontend, API, DB, auth, monorepo)
+- ✅ _generated/diagrams/_diagrams-index.md creato e navigabile
+- ✅ Tutti i blocchi ```mermaid sono sintatticamente validi
+- ✅ Nomi specifici al progetto (no nomi generici)
+- ✅ Nessun diagramma vuoto o con placeholder
 
 ### STEP 7 (Organize Specs)
 - ✅ repo-type-detector.ts ha generato _meta/repo-type.json
@@ -1180,7 +1232,7 @@ AT STEP 6 (Finalize):
 - ✅ Messaggio finale mostrato all'utente con path output
 
 ### OVERALL SUCCESS
-- ✅ Tutti e 13 STEP completati (-1 attraverso 12)
+- ✅ Tutti e 14 STEP completati (-1 attraverso 12, incluso STEP 6)
 - ✅ Output isolato in {output_path}/{project_name}/
 - ✅ 4 directory output nel progetto:
   1. _session/ (metadata, config snapshot, engine version)

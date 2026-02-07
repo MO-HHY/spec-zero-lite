@@ -37,6 +37,20 @@
    ## Architecture Overview
    [Descrizione layers, moduli principali, struttura]
 
+   ### Architecture Diagram
+   ```mermaid
+   graph TD
+     [Diagramma ad alto livello dei componenti principali e le loro relazioni.
+      Usa subgraph per raggruppare per layer. Nomi specifici al progetto.]
+   ```
+
+   ### Tech Stack Diagram
+   ```mermaid
+   graph LR
+     [Diagramma dello stack tecnologico organizzato per layers:
+      Frontend → Backend → Data → Infrastructure]
+   ```
+
    ## Main Modules
    [Lista file/directory principali con ruoli]
 

@@ -127,7 +127,16 @@ spec-zero-lite/
     ├── node-012-performance.md
     ├── node-013-security.md
     ├── node-014-recommendations.md
-    └── node-015-audit.md
+    ├── node-015-audit.md
+    └── diagrams/               (Mermaid diagrams)
+        ├── _diagrams-index.md
+        ├── architecture-overview.md
+        ├── data-flow.md
+        ├── dependency-graph.md
+        ├── sequence-main-flow.md
+        ├── class-hierarchy.md
+        ├── deployment.md
+        └── [conditional diagrams...]
 ```
 
 ---

@@ -144,6 +144,21 @@ Output will be evaluated on:
 None
 {{/if}}
 
+## Diagrams Required
+
+{{#if required_diagrams}}
+This node MUST generate the following Mermaid diagrams inline in its output:
+
+{{#each required_diagrams}}
+### {{this.label}}
+- **Mermaid type**: `{{this.mermaid_type}}`
+- **Description**: {{this.description}}
+- **Requirements**: Names must be specific to the analyzed codebase (no generic labels)
+{{/each}}
+{{else}}
+No diagrams required for this node.
+{{/if}}
+
 ## Failure Handling
 
 If this node cannot be completed:

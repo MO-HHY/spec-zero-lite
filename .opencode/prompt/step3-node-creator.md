@@ -56,9 +56,67 @@ File creato e valido ✓
 4. **Content per ogni nodo**:
    - Scrivi spec che sia **autosufficiente** per generic-executor
    - Includi: purpose, input context, task specifico, format output
+   - **INCLUDI sezione `## Diagrams Required`** con diagrammi Mermaid specifici
    - **Non includere**: step-by-step dettagliati (generic-executor lo farà)
 
-5. **Completamento**: Quando `_meta/02-nodes/` contiene tutti i file nodo → SUCCESS
+5. **Diagrams Required per nodo** (aggiungi questa sezione in ogni node spec):
+
+   ```
+   MAPPATURA NODO → DIAGRAMMI MERMAID:
+   
+   node-001 (bootstrap):
+     → Nessun diagramma richiesto
+   
+   node-002 (dependencies):
+     → graph TD: dependency tree dei package/moduli
+   
+   node-003 (structure):
+     → graph TD: directory hierarchy e module map
+   
+   node-004 (overview):
+     → graph TD: architecture overview (C4 style)
+     → graph LR: tech stack layers
+   
+   node-005 (metrics):
+     → pie: distribuzione codice per linguaggio/modulo
+   
+   node-006 (frontend):
+     → graph TD: component tree (React/Vue/Angular hierarchy)
+     → sequenceDiagram: user interaction flow principale
+   
+   node-007 (backend):
+     → classDiagram: service/controller class structure
+     → sequenceDiagram: request lifecycle (dal router al response)
+   
+   node-008 (database):
+     → erDiagram: entity-relationship delle tabelle/collezioni
+     → graph TD: migration flow (se applicabile)
+   
+   node-009 (api):
+     → sequenceDiagram: per ogni gruppo di endpoint (CRUD, auth, etc.)
+   
+   node-010 (authentication):
+     → sequenceDiagram: auth flow completo (login → token → refresh → logout)
+     → stateDiagram-v2: stati utente (anonymous → authenticated → expired)
+   
+   node-011 (testing):
+     → graph TD: test pyramid (unit → integration → e2e)
+     → pie: coverage breakdown per modulo
+   
+   node-012 (performance):
+     → graph LR: bottleneck identification flow
+   
+   node-013 (security):
+     → sequenceDiagram: threat model (attaccante → sistema → mitigazione)
+   
+   node-014 (recommendations):
+     → graph TD: improvement roadmap con priorità (P0 → P1 → P2)
+   
+   node-015 (audit):
+     → gantt: timeline esecuzione analisi
+   ```
+
+6. **Completamento**: Quando `_meta/02-nodes/` contiene tutti i file nodo → SUCCESS
 
 ---
 

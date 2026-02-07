@@ -48,20 +48,19 @@ duration_seconds: {{duration}}
 
 ## Diagrams
 
-{{#if diagram_1}}
-### Diagram 1: {{diagram_1_title}}
+{{#if diagrams}}
+{{#each diagrams}}
+### {{this.title}}
+
+**Type**: {{this.mermaid_type}} | **Purpose**: {{this.purpose}}
 
 ```mermaid
-{{diagram_1_content}}
+{{this.content}}
 ```
-{{/if}}
 
-{{#if diagram_2}}
-### Diagram 2: {{diagram_2_title}}
-
-```mermaid
-{{diagram_2_content}}
-```
+{{/each}}
+{{else}}
+No diagrams generated for this node.
 {{/if}}
 
 ---

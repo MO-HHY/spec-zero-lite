@@ -3,7 +3,7 @@
   "description": "Central registry for spec submodules across all analyzed repositories",
   "created_at": "2025-01-19T00:00:00Z",
   "updated_at": "2026-01-20T03:57:55Z",
-  "base_specs_path": "/Users/mohamedouassif/Documents/GitHub/Github_MO-HHY_WorkDirectory/HANDHY_SPEC_OS/domain_docs",
+  "base_specs_path": "${SPEC_OS_PATH:-../HANDHY_SPEC_OS/domain_docs}",
   "spec_domains": [
     {
       "domain": "core",

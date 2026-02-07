@@ -11,7 +11,22 @@
 
 1. **Leggi** `_meta/00-overview.md` completamente
 
-2. **Identifica 12-20 nodi di analisi**:
+2. **Identifica nodi di analisi** (ADATTIVI per tipo e dimensione repo):
+
+   **Dimensioni repo → range nodi**:
+   - **Micro** (< 10 file sorgente): 8-10 nodi
+   - **Small** (10-50 file): 10-12 nodi
+   - **Medium** (50-200 file): 12-15 nodi
+   - **Large** (200+ file): 15-20 nodi
+   - **Monorepo**: 15-20 nodi + sotto-nodi per package
+
+   **REGOLA CRITICA**: NON creare nodi vuoti o inutili.
+   - Se repo non ha frontend → SALTA nodo frontend
+   - Se repo non ha database → SALTA nodo database
+   - Se repo non ha auth → SALTA nodo authentication
+   - Adatta i nodi al VERO contenuto del repo
+
+   **Template nodi per layer** (usa SOLO quelli rilevanti):
    - **Layer 0** (nessuna dipendenza): bootstrap, structure
    - **Layer 1** (dipende L0): overview, dependencies
    - **Layer 2** (dipende L1): frontend, backend, database

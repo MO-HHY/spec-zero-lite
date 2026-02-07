@@ -67,6 +67,12 @@
             "description": "Step 7: Organizza 15 nodi in struttura modulare adattiva al tipo di repo. Crea {reponame}-Specs/ con cartelle coerenti e INDEX navigabile.",
             "prompt": "leggi il file .opencode/prompt/step7-spec-organizer.md e poi esegui il tuo compito"
         },
+        "diagram-generator": {
+            "model": "google/antigravity-gemini-3-flash",
+            "mode": "subagent",
+            "description": "Step 6: Genera diagrammi Mermaid (architettura, sequence, ER, flussi dati, classi, deployment) dalla repo target analizzata. Legge tutti gli output dei nodi e crea visualizzazioni strutturate in _generated/diagrams/.",
+            "prompt": "leggi il file .opencode/prompt/step6-diagram-generator.md e poi esegui il tuo compito"
+        },
         "spec-os-adapter": {
             "model": "google/antigravity-gemini-3-flash",
             "mode": "subagent",

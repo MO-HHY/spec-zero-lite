@@ -36,6 +36,12 @@ Per ogni input file listato in node spec:
 Seguendo la node spec:
 - Analizza i file / contesto
 - Produci insight/analisi/report come specificato
+- **GENERA DIAGRAMMI MERMAID**: Leggi sezione "Diagrams Required" della node spec
+  - Ogni diagramma DEVE essere un blocco ```mermaid valido e renderizzabile
+  - Tipi supportati: graph TD/LR, sequenceDiagram, classDiagram, erDiagram, pie, gantt, stateDiagram-v2
+  - Nomi dei nodi DEVONO essere SPECIFICI al codice analizzato (no nomi generici)
+  - Ogni diagramma va in una sezione ## Diagrams con titolo descrittivo
+  - Se la node spec dice "Nessun diagramma", non generare diagrammi
 - Documento in Markdown
 ```
 

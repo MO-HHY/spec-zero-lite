@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**spec-zero-lite** is an intelligent repository analyzer that autonomously generates comprehensive technical documentation using a modular agentic orchestration system. Rather than hardcoded logic, it uses specialized LLM agents to analyze software repositories and generate 15 detailed specification documents through a 13-step pipeline.
+**spec-zero-lite** is an intelligent repository analyzer that autonomously generates comprehensive technical documentation using a modular agentic orchestration system. Rather than hardcoded logic, it uses specialized LLM agents to analyze software repositories and generate 15 detailed specification documents through a 14-step pipeline.
 
 **Key Paradigm**: Shifting from algorithmic (hardcoded logic) to agentic (LLM agent-based) problem solving—specifying what to do rather than writing code that "knows" what to do.
 
@@ -181,17 +181,21 @@ Each layer executes in parallel (except bootstrap/audit which are serial). Next 
 
 ### Modular Agent System
 
-8 specialized agents with specific responsibilities:
+12 specialized agents with specific responsibilities:
 
 | Agent | Model* | Purpose |
 |-------|--------|---------|
-| orchestrator | Opus | Coordinates entire 5-step pipeline |
+| orchestrator | Opus | Coordinates entire 14-step pipeline |
 | analyzer | Opus | Initial repository analysis and tech stack detection |
 | dag-planner | Opus | Creates dependency graph and node definitions |
-| node-creator | Opus | Generates detailed specifications for 15 analysis nodes |
+| node-creator | Opus | Generates detailed specifications for analysis nodes |
 | generic-executor | Opus | Executes individual nodes with context injection |
 | standard-analyzer | Opus | Modular analyzer for parameterized analysis tasks |
 | documentation-writer | Opus | Converts raw analysis into polished documentation |
+| diagram-generator | Flash | Generates Mermaid diagrams (architecture, sequence, ER, flows) |
+| spec-organizer | Flash | Organizes generated specs into modular adaptive structure |
+| spec-os-adapter | Flash | Applies SPEC-OS conventions (UIDs, frontmatter, links) |
+| spec-git-manager | Flash | Manages git submodules and spec synchronization |
 | logging-manager | Flash | Handles telemetry, metrics, and structured logging |
 
 *Model assignments in `opencode.json` support intelligent selection based on task complexity and context size. See `.opencode/models.md` for selection strategy.
