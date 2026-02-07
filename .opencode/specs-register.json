@@ -1,0 +1,166 @@
+{
+  "version": "1.0",
+  "description": "Central registry for spec submodules across all analyzed repositories",
+  "created_at": "2025-01-19T00:00:00Z",
+  "updated_at": "2026-01-20T03:57:55Z",
+  "base_specs_path": "/Users/mohamedouassif/Documents/GitHub/Github_MO-HHY_WorkDirectory/HANDHY_SPEC_OS/domain_docs",
+  "spec_domains": [
+    {
+      "domain": "core",
+      "description": "Core system specifications (UI, templates, etc.)",
+      "specs": [
+        {
+          "repo_name": "ui-template",
+          "spec_name": "ui-template-spec",
+          "path": "core/ui-template-spec",
+          "repo_url": "TBD",
+          "submodule_status": "not_created",
+          "created_at": null,
+          "last_updated": null,
+          "files_count": 0,
+          "git_commit": null
+        }
+      ]
+    },
+    {
+      "domain": "ops",
+      "description": "Operations and infrastructure specifications",
+      "specs": [
+        {
+          "repo_name": "repo-swarm",
+          "spec_name": "repo-swarm-spec",
+          "path": "ops/repo-swarm-spec",
+          "repo_url": "TBD",
+          "submodule_status": "not_created",
+          "created_at": null,
+          "last_updated": null,
+          "files_count": 0,
+          "git_commit": null
+        },
+        {
+          "repo_name": "workspace-manager",
+          "spec_name": "workspace-spec",
+          "path": "ops/workspace-spec",
+          "repo_url": "TBD",
+          "submodule_status": "not_created",
+          "created_at": null,
+          "last_updated": null,
+          "files_count": 0,
+          "git_commit": null
+        }
+      ]
+    },
+    {
+      "domain": "systems",
+      "description": "System-level specifications (Mithril, etc.)",
+      "specs": [
+        {
+          "repo_name": "mithril",
+          "spec_name": "mithril-spec",
+          "path": "systems/mithril-spec",
+          "repo_url": "TBD",
+          "submodule_status": "not_created",
+          "created_at": null,
+          "last_updated": null,
+          "files_count": 0,
+          "git_commit": null
+        },
+        {
+          "repo_name": "palantir",
+          "spec_name": "palantir-spec",
+          "path": "systems/palantir-spec",
+          "repo_url": "TBD",
+          "submodule_status": "created",
+          "created_at": "2026-01-20T03:57:55Z",
+          "last_updated": "2026-01-20T03:57:55Z",
+          "files_count": 24,
+          "git_commit": "3db5dd01c37bb28560fea4c3127505840f52a956"
+        }
+      ]
+    },
+    {
+      "domain": "iot",
+      "description": "Internet of Things specifications",
+      "specs": [
+        {
+          "repo_name": "arwen",
+          "spec_name": "arwen-specs",
+          "path": "iot/arwen-specs",
+          "repo_url": "TBD",
+          "submodule_status": "created",
+          "created_at": "2026-01-20T00:06:27Z",
+          "last_updated": "2026-01-20T00:06:27Z",
+          "files_count": 17,
+          "git_commit": "b5f0beefe035c65ddae1cdf70776f7a226a7b3ac"
+        }
+      ]
+    }
+  ],
+  "submodule_operations": [
+    {
+      "operation_id": "op_001",
+      "operation": "initial_registry_creation",
+      "timestamp": "2025-01-19T00:00:00Z",
+      "status": "completed",
+      "details": "Created central specifications register"
+    },
+    {
+      "operation_id": "op_002",
+      "operation": "spec_sync",
+      "repo_name": "arwen",
+      "spec_domain": "iot",
+      "spec_name": "arwen-specs",
+      "timestamp": "2026-01-20T00:06:27Z",
+      "status": "completed",
+      "submodule_status": "created",
+      "actions": [
+        "submodule_created",
+        "files_committed",
+        "backup_created"
+      ],
+      "details": {
+        "submodule_path": ".specs/iot/arwen-specs",
+        "files_count": 17,
+        "commit_hash": "b5f0beefe035c65ddae1cdf70776f7a226a7b3ac",
+        "parent_commit": "0a6544ae083a7b8039ab549815ae95be9bf2f4ec",
+        "backup_path": "backups/specs-20260120-000627.tar.gz",
+        "backup_size_kb": 28,
+        "git_errors": []
+      }
+    },
+    {
+      "operation_id": "op_003",
+      "operation": "spec_sync",
+      "repo_name": "palantir",
+      "spec_domain": "systems",
+      "spec_name": "palantir-spec",
+      "timestamp": "2026-01-20T03:57:55Z",
+      "status": "completed",
+      "submodule_status": "created",
+      "actions": [
+        "submodule_created",
+        "files_committed",
+        "backup_created"
+      ],
+      "details": {
+        "submodule_path": ".specs/systems/palantir-spec",
+        "files_count": 24,
+        "commit_hash": "3db5dd01c37bb28560fea4c3127505840f52a956",
+        "parent_commit": "922f873c680ebe1eb55a0d1d2477447aa20c9658",
+        "backup_path": "backups/specs-20260120-035755.tar.gz",
+        "backup_size_kb": 40,
+        "git_errors": []
+      }
+    }
+  ],
+  "notes": {
+    "submodule_strategy": "Each analyzed repo gets its own submodule pointing to HANDHY_SPEC_OS/domain_docs/{domain}/{spec_name}",
+    "workflow": [
+      "1. When analyzing a repo, check if spec submodule exists",
+      "2. If not exists: create submodule, copy {reponame}-Specs/ files, commit",
+      "3. If exists: mount submodule, sync {reponame}-Specs/ files, commit",
+      "4. Create tar.gz backup of specs only (not full analysis)",
+      "5. Update this register with operation metadata"
+    ]
+  }
+}

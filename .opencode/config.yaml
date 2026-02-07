@@ -1,0 +1,293 @@
+# .opencode Configuration
+# ========================
+# Configuration for spec-zero-lite orchestration and analysis
+
+project:
+  name: "spec-zero-lite"
+  version: "1.1.0"
+  description: "Modular agentic orchestrator for repository analysis"
+
+# ============================================================================
+# ANALYSIS PROJECT CONFIGURATION (v1.1.0)
+# ============================================================================
+# Ogni analisi viene salvata in una directory dedicata, esterna al engine.
+# Questo mantiene spec-zero-lite pulito e traccia ogni analisi come progetto.
+
+analysis:
+  # Output management
+  output:
+    prompt_for_path: true                    # Chiedi path all'avvio con /start
+    default_base: "~/Analyses"               # Fallback se non specificato
+    naming_pattern: "{repo_name}-{date}-{time}"
+    # Pattern risultato: tag-device-2026-02-07-1231
+    # Variabili disponibili:
+    #   {repo_name} - Nome del repository analizzato
+    #   {date}      - Data in formato YYYY-MM-DD
+    #   {time}      - Ora in formato HHMM
+    #   {uuid}      - UUID corto (8 caratteri)
+
+  # Session metadata - tracciabilità completa
+  session:
+    create_metadata: true                    # Crea _session/session.json
+    capture_engine_version: true             # Salva git hash di spec-zero-lite
+    snapshot_config: true                    # Copia config.yaml usata
+    capture_repo_git_hash: true              # Salva git hash del repo analizzato
+
+  # Intermediate files - cosa conservare nel progetto analisi
+  intermediate:
+    keep_meta: true                          # Conserva _meta/ (DAG, node specs)
+    keep_generated: true                     # Conserva _generated/ (output raw)
+    keep_cache: true                         # Conserva cache/ (dependency summaries)
+    keep_logs: true                          # Conserva logs/ (audit trail)
+    keep_node_specs: true                    # Conserva 02-nodes/ (specifiche nodi)
+
+  # Cleanup - pulisce spec-zero-lite dopo completamento
+  cleanup:
+    enabled: true                            # Attiva cleanup automatico
+    clean_after_completion: true             # Pulisci solo se analisi completata
+    clean_on_failure: false                  # NON pulire se analisi fallita
+    directories_to_clean:
+      - "_meta"
+      - "_generated"
+    # Nota: {repo_name}-Specs viene spostato, non eliminato
+
+  # Project structure - struttura directory progetto analisi
+  structure:
+    session_dir: "_session"                  # Metadata sessione
+    meta_dir: "_meta"                        # Lavoro intermedio
+    generated_dir: "_generated"              # Output raw
+    specs_dir: "{repo_name}-Specs"           # Output organizzato finale
+    
+  # Session files
+  session_files:
+    main: "session.json"                     # Metadata principale
+    engine_version: "engine-version.txt"     # Git hash engine
+    config_snapshot: "config-snapshot.yaml"  # Config usata
+
+# ============================================================================
+
+# Directory Configuration (engine-level, usate durante esecuzione)
+directories:
+  meta: "_meta"
+  generated: "_generated"
+  logs: "_meta/logs"
+  cache: "_meta/cache"
+  nodes_spec: "_meta/02-nodes"
+  prompts: ".opencode/prompt"
+  skills: ".opencode/skill"
+  templates: ".opencode/template"
+
+# Logging Configuration
+logging:
+  level: "debug"  # debug, info, warning, error
+  format: "json"  # json, text
+  file: "_meta/logs/orchestrator.log"
+
+  # Rotation settings
+  rotation:
+    max_size_mb: 50
+    max_files: 10
+    compression: true
+
+  # Log levels per component
+  components:
+    orchestrator: "info"
+    analyzer: "info"
+    dag_planner: "info"
+    node_creator: "info"
+    generic_executor: "debug"
+    logging_manager: "info"
+
+# Execution Configuration
+execution:
+  # Retry policy
+  max_retries: 2
+  retry_delay_seconds: 5
+
+  # Timeouts
+  timeout_seconds: 300
+  node_timeout_seconds: 300
+
+  # Parallelization
+  parallelism:
+    enabled: true
+    intra_layer: true
+    max_concurrent_nodes: 4
+    max_concurrent_files: 10
+
+  # Error handling
+  error_handling:
+    on_critical_failure: "abort"  # abort or continue
+    on_node_failure: "mark_and_continue"
+    resumable: true
+
+# Context Management
+context:
+  max_context_window: 100000  # tokens
+  file_truncation: true
+  max_lines_per_file: 500
+  max_file_size_kb: 100
+  cache_dependencies: true
+
+# Template Configuration
+templates:
+  version: "v0"
+  extension: ".template.md"
+  types:
+    analysis: "analysis-v0.template.md"
+    dag_plan: "dag-plan-v0.template.md"
+    node_spec: "node-spec-v0.template.md"
+    execution_report: "execution-report-v0.template.md"
+    summary: "summary-v0.template.md"
+
+# Skill Configuration
+skills:
+  enabled: true
+  python_version: "3.8+"
+  typescript_version: "5.0+"
+  # Scripts to load at startup
+  startup_scripts:
+    - "metadata_manager.py"
+    - "repo_analyzer.py"
+
+# Prompt Configuration
+prompts:
+  system_role: "You are an expert code analyzer specializing in repository analysis."
+  temperature: 0.7
+  max_tokens_response: 4000
+  models:
+    default: "claude-opus-4-5"
+    analyzer: "claude-opus-4-5"
+    dag_planner: "claude-opus-4-5"
+    node_creator: "claude-opus-4-5"
+    generic_executor: "claude-opus-4-5"
+
+# Analysis Layers Configuration
+layers:
+  - number: 0
+    name: "Bootstrap"
+    parallel: false
+    max_concurrent: 1
+
+  - number: 1
+    name: "Foundation"
+    parallel: true
+    max_concurrent: 2
+
+  - number: 2
+    name: "Analysis"
+    parallel: true
+    max_concurrent: 2
+
+  - number: 3
+    name: "Domain"
+    parallel: true
+    max_concurrent: 3
+
+  - number: 4
+    name: "Details"
+    parallel: true
+    max_concurrent: 3
+
+  - number: 5
+    name: "Operations"
+    parallel: true
+    max_concurrent: 2
+
+  - number: 6
+    name: "Summary"
+    parallel: false
+    max_concurrent: 1
+
+# Quality Configuration
+quality:
+  minimum_score: 7.0
+  scoring_weights:
+    completeness: 0.50
+    clarity: 0.20
+    actionability: 0.15
+    evidence: 0.15
+
+  validation:
+    check_markdown: true
+    check_frontmatter: true
+    check_placeholders: true
+    check_sections: true
+
+# Output Configuration
+output:
+  format: "markdown"
+  encoding: "utf-8"
+  line_endings: "lf"
+
+  # Generated files
+  generated:
+    prefix: "node-"
+    extension: ".md"
+    create_index: true
+    create_manifest: true
+
+# Monitoring & Metrics
+monitoring:
+  enabled: true
+  metrics_file: "_meta/metrics.json"
+  collect_token_usage: true
+  collect_timing: true
+  collect_quality_scores: true
+
+  # Real-time status
+  status_file: "_meta/current-status.json"
+  status_update_interval_seconds: 5
+
+# Advanced Configuration
+advanced:
+  # State persistence
+  persist_state: true
+  state_file: "_meta/state.json"
+
+  # Resumability
+  resumable: true
+  resume_from_last_failed: true
+
+  # Debugging
+  verbose_logging: false
+  keep_temp_files: false
+  dry_run_mode: false
+
+  # Performance
+  use_cache: true
+  cache_ttl_minutes: 60
+  prefetch_dependencies: true
+
+# Environment Variables
+environment:
+  REPO_PATH: "."
+  ANALYSIS_DEPTH: "3"
+  INCLUDE_HIDDEN_FILES: "false"
+  SKIP_NODES: ""  # Comma-separated list of node IDs to skip
+
+# Integration Configuration
+integrations:
+  # For future extensions
+  notify_on_completion: false
+  notification_webhook: ""
+
+  # External services
+  analytics_enabled: false
+  analytics_endpoint: ""
+
+---
+# Configuration Notes
+# ===================
+#
+# 1. Logging: Set level to "debug" for verbose output during development
+# 2. Execution: Adjust max_concurrent_nodes based on system resources
+# 3. Context: Reduce max_context_window if hitting LLM limits
+# 4. Templates: Custom templates can be added following the v0 pattern
+# 5. Skills: Add custom Python/TypeScript scripts in .opencode/skill/
+#
+# For production use:
+# - Set logging.level to "warning"
+# - Increase max_retries to 3
+# - Enable cache and prefetch
+# - Monitor token usage via metrics file

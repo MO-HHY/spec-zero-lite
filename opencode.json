@@ -1,0 +1,83 @@
+{
+    "$schema": "https://opencode.ai/config.json",
+    "default_agent": "orchestrator",
+    "mcp": {
+        "clickup": {
+            "type": "remote",
+            "url": "https://mcp.clickup.com/mcp",
+            "oauth": false,
+            "headers": {
+                "Authorization": "Bearer {env:CLICKUP_API_TOKEN}"
+            },
+            "enabled": true
+        }
+    },
+    "agent": {
+        "orchestrator": {
+            "model": "google/antigravity-gemini-3-flash",
+            "mode": "primary",
+            "description": "Agente principale che coordina il flusso agentico in 5 step: Analysis → Planning → Node Creation → Preparation → Execution. Necessita di alto ragionamento e contesto.",
+            "prompt": "leggi il file .opencode/prompt/orchestrator-main.md e poi esegui il tuo compito"
+        },
+        "analyzer": {
+            "model": "google/antigravity-gemini-3-flash",
+            "mode": "subagent",
+            "description": "Step 1: Analizza il repository e genera 00-overview.md con tech stack, features e raccomandazioni. Richiede alto contesto per leggere molteplici file.",
+            "prompt": "leggi il file .opencode/prompt/step1-analyzer.md e poi esegui il tuo compito"
+        },
+        "dag-planner": {
+            "model": "google/antigravity-gemini-3-flash",
+            "mode": "subagent",
+            "description": "Step 2: Genera il piano DAG (01-dag.md) con dipendenze, layer e assegnazioni. Richiede ragionamento complesso su dipendenze.",
+            "prompt": "leggi il file .opencode/prompt/step2-dag-planner.md e poi esegui il tuo compito"
+        },
+        "node-creator": {
+            "model": "google/antigravity-gemini-3-flash",
+            "mode": "subagent",
+            "description": "Step 3: Crea le specifiche dettagliate per ogni nodo (02-nodes/*.md). Richiede ragionamento strutturato e planning.",
+            "prompt": "leggi il file .opencode/prompt/step3-node-creator.md e poi esegui il tuo compito"
+        },
+        "generic-executor": {
+            "model": "google/antigravity-gemini-3-flash",
+            "mode": "subagent",
+            "description": "Step 5: Esecutore generico che processa qualsiasi node spec e genera output documentale. Alto contesto per contesti di esecuzione variabili.",
+            "prompt": "leggi il file .opencode/prompt/step5-generic-executor.md e poi esegui il tuo compito"
+        },
+        "standard-analyzer": {
+            "model": "google/antigravity-gemini-3-flash",
+            "mode": "subagent",
+            "description": "Agente standard esperto di analisi modulare che assume funzioni specifiche via prompt parametrizzati. Attività di analisi fine e precisa.",
+            "prompt": "leggi il file .opencode/prompt/standard-analyzer-base.md e poi esegui il tuo compito"
+        },
+        "documentation-writer": {
+            "model": "google/antigravity-gemini-3-flash",
+            "mode": "subagent",
+            "description": "Agente specializzato in generazione documentale seguendo i template definiti. Scrittura precisa e formattazione fine.",
+            "prompt": "leggi il file .opencode/prompt/documentation-writer.md e poi esegui il tuo compito"
+        },
+        "logging-manager": {
+            "model": "google/antigravity-gemini-3-flash",
+            "mode": "subagent",
+            "description": "Gestisce logging strutturato, creazione file di log e summary della sessione. Attività veloce e ripetitiva.",
+            "prompt": " leggi il file .opencode/prompt/logging-manager.md e poi esegui il tuo compito"
+        },
+        "spec-organizer": {
+            "model": "google/antigravity-gemini-3-flash",
+            "mode": "subagent",
+            "description": "Step 7: Organizza 15 nodi in struttura modulare adattiva al tipo di repo. Crea {reponame}-Specs/ con cartelle coerenti e INDEX navigabile.",
+            "prompt": "leggi il file .opencode/prompt/step7-spec-organizer.md e poi esegui il tuo compito"
+        },
+        "spec-os-adapter": {
+            "model": "google/antigravity-gemini-3-flash",
+            "mode": "subagent",
+            "description": "Step 8: Applica convenzioni SPEC-OS minimali ma coerenti. Aggiunge frontmatter YAML, UID, link Obsidian e dipendenze seguendo schema SPEC-OS.",
+            "prompt": "leggi il file .opencode/prompt/step8-spec-os-adapter.md e poi esegui il tuo compito"
+        },
+        "spec-git-manager": {
+            "model": "google/antigravity-gemini-3-flash",
+            "mode": "subagent",
+            "description": "Step 11: Gestisce submodule git per spec, sincronizzazione file, commit automatici e backup tar.gz. Usa skill git-manager.ts per operazioni git robuste.",
+            "prompt": "leggi il file .opencode/prompt/step11-spec-git-manager.md e poi esegui il tuo compito"
+        }
+    }
+}
